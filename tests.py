@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.db import models
+from DjangoModelTester.models import ModelTesterRealModel
 from DjangoModelTester.ModelTester import ModelTester
 
-class ExampleModel(models.Model):
+class ModelTesterAbstractModel(models.Model):
     class Meta:
         abstract = True
 
@@ -12,7 +13,67 @@ class ModelTesterTestCase(TestCase):
         el = ModelTester()
     
     def test_methods(self):
-        self.assertEqual(ModelTester.checkModelType(ExampleModel), None)
+        """
+        checkModelType
+        """
+        self.assertEqual(ModelTester.checkModelType(ModelTesterAbstractModel), None)
         self.assertRaises(Exception, ModelTester.checkModelType, modelElement='1234')
         self.assertRaises(Exception, ModelTester.checkModelType, modelElement=models.Model)
-        self.assertIsNot(ModelTester.getModelHash(ExampleModel), None)
+        
+        """
+        getModelHash
+        """
+        self.assertIsNot(ModelTester.getModelHash(ModelTesterAbstractModel), None)
+        
+        """
+        getModelInstance
+        """
+        self.assertRaises(Exception, ModelTester.getModelInstance, modelElement=models.Model)
+        ModelTester.getModelInstance(ModelTesterRealModel)
+        
+    def test_testMethod(self):
+        el = ModelTester()
+        self.assertRaises(Exception, el.testModel, modelElement=ModelTesterAbstractModel)
+        
+        
+"""
+AutoField
+BigAutoField
+BigIntegerField
+BinaryField
+BooleanField
+CharField
+CommaSeparatedIntegerField
+DateField
+DateTimeCheckMixin
+DateTimeField
+DecimalField
+DeferredAttribute
+DictWrapper
+DurationField
+EmailField
+Empty
+Field
+FieldDoesNotExist
+FilePathField
+FloatField
+GenericIPAddressField
+IPAddressField
+IntegerField
+NOT_PROVIDED
+NullBooleanField
+PositiveIntegerField
+PositiveIntegerRelDbTypeMixin
+PositiveSmallIntegerField
+Promise
+RegisterLookupMixin
+RemovedInDjango20Warning
+SlugField
+SmallIntegerField
+TextField
+TimeField
+URLField
+UUIDField
+cached_property
+warn_about_renamed_method
+"""
