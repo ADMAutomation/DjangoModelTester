@@ -7,4 +7,7 @@ from django.db import models
 class ModelTesterRealModel(models.Model):
     numberField = models.IntegerField()
     numberFieldChoices = models.IntegerField( choices=((0, 'zero'), (1, 'uno'), (2, 'due')) )
+
+class ModelTesterRelatedRealModel(models.Model):
+    relatedField = models.ForeignKey(ModelTesterRealModel)
     

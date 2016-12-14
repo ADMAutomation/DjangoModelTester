@@ -4,6 +4,12 @@ from django.db.models.fields import NOT_PROVIDED
 from autofixture import AutoFixture
 
 class ModelTester():
+    models_to_test = []
+    verbose = True
+    def runTests(self):
+        for modelElement in self.models_to_test:
+            self.testModel(modelElement)
+    
     _tested_models = []
     @staticmethod
     def checkModelType(modelElement):
@@ -39,23 +45,11 @@ class ModelTester():
         if modelElement._meta.abstract:
             raise Exception('Can\'t make instance of an Abstract model. Class: %s' % modelElement.__class__ )
                
-        el = modelElement()
-        
         if empty:
-            return el
+            return modelElement()
         
-        fields = modelElement._meta.get_fields()
-        
-        for f in fields:
-            if ModelTester._mustCheck(f):
-                # do test
-                if f.is_relation:
-                    pass
-                else:
-                    pass
-                
-        
-        return el
+        fixtures = AutoFixture(modelElement)
+        return fixtures.create(1)[0]
     
     @staticmethod
     def getModelInstance(modelElement, empty=False):
@@ -72,9 +66,20 @@ class ModelTester():
             return True
         else:
             self._tested_models.append(modelHash)
+        
+        """
+        Si comunica che inizia il test del modello alla shell
+        """
+        if self.verbose:
+            print 'Testing model %s' % (modelElement._meta.verbose_name)
+                
         """
         Si crea un'instanza del modello che si vuole testare
         """
         el = ModelTester._getModelInstance(modelElement)
         
-        return False
+        """
+        Si cancella l'istanza appena creata
+        """
+        el.delete()
+        return True

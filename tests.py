@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db import models
-from DjangoModelTester.models import ModelTesterRealModel
+from DjangoModelTester.models import ModelTesterRealModel, ModelTesterRelatedRealModel
 from DjangoModelTester.ModelTester import ModelTester
 
 class ModelTesterAbstractModel(models.Model):
@@ -30,50 +30,18 @@ class ModelTesterTestCase(TestCase):
         """
         self.assertRaises(Exception, ModelTester.getModelInstance, modelElement=models.Model)
         ModelTester.getModelInstance(ModelTesterRealModel)
-        
-    def test_testMethod(self):
+    
+    def test_getInstance(self):
+        el = ModelTester._getModelInstance(ModelTesterRealModel, True)
+        el = ModelTester._getModelInstance(ModelTesterRealModel, False)
+        el = ModelTester._getModelInstance(ModelTesterRelatedRealModel)
+                
+    def test_testModelMethod(self):
         el = ModelTester()
         self.assertRaises(Exception, el.testModel, modelElement=ModelTesterAbstractModel)
         
+    def test_testOnModelList(self):
+        el = ModelTester()
+        el.models_to_test = [ModelTesterRealModel, ModelTesterRelatedRealModel]
+        el.runTests()
         
-"""
-AutoField
-BigAutoField
-BigIntegerField
-BinaryField
-BooleanField
-CharField
-CommaSeparatedIntegerField
-DateField
-DateTimeCheckMixin
-DateTimeField
-DecimalField
-DeferredAttribute
-DictWrapper
-DurationField
-EmailField
-Empty
-Field
-FieldDoesNotExist
-FilePathField
-FloatField
-GenericIPAddressField
-IPAddressField
-IntegerField
-NOT_PROVIDED
-NullBooleanField
-PositiveIntegerField
-PositiveIntegerRelDbTypeMixin
-PositiveSmallIntegerField
-Promise
-RegisterLookupMixin
-RemovedInDjango20Warning
-SlugField
-SmallIntegerField
-TextField
-TimeField
-URLField
-UUIDField
-cached_property
-warn_about_renamed_method
-"""
