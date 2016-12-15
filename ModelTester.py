@@ -25,7 +25,7 @@ class ModelTester():
         
     @staticmethod
     def _getModelHash(modelElement):
-        return '%s %s' % ( modelElement.__module__, modelElement.__class__)
+        return '%s %s' % ( modelElement.__module__, modelElement)
     
     @staticmethod
     def getModelHash(modelElement):
@@ -48,7 +48,7 @@ class ModelTester():
         if empty:
             return modelElement()
         
-        fixtures = AutoFixture(modelElement)
+        fixtures = AutoFixture(modelElement, generate_fk=True, none_p=1, overwrite_defaults=False )
         return fixtures.create(1)[0]
     
     @staticmethod
