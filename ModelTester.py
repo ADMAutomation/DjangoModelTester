@@ -5,6 +5,7 @@ from autofixture import AutoFixture
 
 class ModelTester():
     models_to_test = []
+    actions = ['create', 'delete']
     verbose = True
     def runTests(self):
         for modelElement in self.models_to_test:
@@ -77,9 +78,9 @@ class ModelTester():
         Si crea un'instanza del modello che si vuole testare
         """
         el = ModelTester._getModelInstance(modelElement)
-        
-        """
-        Si cancella l'istanza appena creata
-        """
-        el.delete()
+        if 'delete' in self.actions:
+            """
+            Si cancella l'istanza appena creata
+            """
+            el.delete()
         return True
