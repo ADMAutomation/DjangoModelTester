@@ -1,4 +1,4 @@
-import inspect
+import inspect, hashlib
 from django.db import models
 from django.db.models.fields import NOT_PROVIDED
 from autofixture import AutoFixture
@@ -27,7 +27,8 @@ class ModelTester():
         
     @staticmethod
     def _getModelHash(modelElement):
-        return '%s %s' % ( modelElement.__module__, modelElement)
+        w = '%s%s' % ( modelElement.__module__, modelElement)
+        return hashlib.md5(w).hexdigest()[:15]
     
     @staticmethod
     def getModelHash(modelElement):
@@ -49,11 +50,10 @@ class ModelTester():
         if empty:
             return modelElement()
         if field_values is None:
-            hash = self._getModelHash(modelElement)
-            if hash in self.models_values.keys():
-                field_values = self.models_values[hash]
-        r = None
-        fixtures = AutoFixture(modelElement, generate_fk=True, none_p=1, overwrite_defaults=False, field_values=field_values )
+            h = self._getModelHash(modelElement)
+            if h in self.models_values.keys():
+                field_values = self.models_values[h]
+        fixtures = AutoFixture(modelElement, field_values=field_values, none_p=1, overwrite_defaults=False, generate_fk=True )
         return fixtures.create(1)[0]
     
     @staticmethod
