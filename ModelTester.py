@@ -5,6 +5,7 @@ from autofixture import AutoFixture
 
 class ModelTester():
     models_to_test = []
+    models_values = {}
     actions = ['create', 'delete']
     verbose = True
     def runTests(self):
@@ -41,23 +42,32 @@ class ModelTester():
             return False
         return True
         
+    def _getModelInstance(self, modelElement, empty=False, field_values=None):
+        if modelElement._meta.abstract:
+            raise Exception('Can\'t make instance of an Abstract model. Class: %s' % modelElement.__class__ )
+               
+        if empty:
+            return modelElement()
+        if field_values is None:
+            hash = self._getModelHash(modelElement)
+            if hash in self.models_values.keys():
+                field_values = self.models_values[hash]
+        r = None
+        fixtures = AutoFixture(modelElement, generate_fk=True, none_p=1, overwrite_defaults=False, field_values=field_values )
+        return fixtures.create(1)[0]
+    
     @staticmethod
-    def _getModelInstance(modelElement, empty=False):
+    def getModelInstance(modelElement, empty=False, field_values=None):
         if modelElement._meta.abstract:
             raise Exception('Can\'t make instance of an Abstract model. Class: %s' % modelElement.__class__ )
                
         if empty:
             return modelElement()
         
-        fixtures = AutoFixture(modelElement, generate_fk=True, none_p=1, overwrite_defaults=False )
+        fixtures = AutoFixture(modelElement, generate_fk=True, none_p=1, overwrite_defaults=False, field_values=field_values )
         return fixtures.create(1)[0]
-    
-    @staticmethod
-    def getModelInstance(modelElement, empty=False):
-        ModelTester.checkModelType(modelElement)
-        return ModelTester._getModelInstance(modelElement, empty)
 
-    def testModel(self, modelElement):
+    def testModel(self, modelElement, field_values=None):
         ModelTester.checkModelType(modelElement)
         """
         Si ricordano quali sono i modelli gia' testati
@@ -77,7 +87,7 @@ class ModelTester():
         """
         Si crea un'instanza del modello che si vuole testare
         """
-        el = ModelTester._getModelInstance(modelElement)
+        el = self._getModelInstance(modelElement, field_values=field_values)
         if 'delete' in self.actions:
             """
             Si cancella l'istanza appena creata

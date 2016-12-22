@@ -32,9 +32,9 @@ class ModelTesterTestCase(TestCase):
         ModelTester.getModelInstance(ModelTesterRealModel)
     
     def test_getInstance(self):
-        el = ModelTester._getModelInstance(ModelTesterRealModel, True)
-        el = ModelTester._getModelInstance(ModelTesterRealModel, False)
-        el = ModelTester._getModelInstance(ModelTesterRelatedRealModel)
+        el = ModelTester.getModelInstance(ModelTesterRealModel, True)
+        el = ModelTester.getModelInstance(ModelTesterRealModel, False)
+        el = ModelTester.getModelInstance(ModelTesterRelatedRealModel)
                 
     def test_testModelMethod(self):
         el = ModelTester()
