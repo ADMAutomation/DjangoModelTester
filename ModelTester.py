@@ -1,3 +1,4 @@
+# import time
 import inspect, hashlib
 from django.db import models
 from django.db.models.fields import NOT_PROVIDED
@@ -69,6 +70,7 @@ class ModelTester():
 
     def testModel(self, modelElement, field_values=None):
         ModelTester.checkModelType(modelElement)
+        # start_time = time.time()
         """
         Si ricordano quali sono i modelli gia' testati
         """
@@ -93,4 +95,5 @@ class ModelTester():
             Si cancella l'istanza appena creata
             """
             el.delete()
+        # print "Time: %s" % (time.time() - start_time)
         return True
