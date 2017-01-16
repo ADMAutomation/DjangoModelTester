@@ -90,6 +90,7 @@ class ModelTester():
         Si crea un'instanza del modello che si vuole testare
         """
         el = self._getModelInstance(modelElement, field_values=field_values)
+        el.clean()
         if 'delete' in self.actions:
             """
             Si cancella l'istanza appena creata
