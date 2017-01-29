@@ -7,7 +7,7 @@ from autofixture import AutoFixture
 class ModelTester():
     models_to_test = []
     models_values = {}
-    actions = ['create', 'delete']
+    actions = ['create', 'delete', 'string']
     verbose = True
     def runTests(self):
         for modelElement in self.models_to_test:
@@ -91,6 +91,16 @@ class ModelTester():
         """
         el = self._getModelInstance(modelElement, field_values=field_values)
         el.clean()
+        
+        """
+        Si testa la versione stringa del modello
+        """
+        if 'string' in self.actions:
+            str(el)
+            
+        """
+        Si testa l'eliminazione
+        """
         if 'delete' in self.actions:
             """
             Si cancella l'istanza appena creata
