@@ -14,7 +14,7 @@ setup(
     name='adm_modeltester',
     version=adm_modeltester.__version__,
     #packages=find_packages(),
-    packages=['adm_modeltester'], 
+    packages=['adm_modeltester', 'adm_modeltester.migrations'], 
     include_package_data=True,
     install_requires=[
         'django', 
