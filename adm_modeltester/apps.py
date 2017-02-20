@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class DjangomodeltesterConfig(AppConfig):
-    name = 'DjangoModelTester'
+    name = 'adm_modeltester'

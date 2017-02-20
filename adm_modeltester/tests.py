@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import models
-from DjangoModelTester.models import ModelTesterRealModel, ModelTesterRelatedRealModel
-from DjangoModelTester.ModelTester import ModelTester
+from .models import ModelTesterRealModel, ModelTesterRelatedRealModel
+from .ModelTester import ModelTester
 
 class ModelTesterAbstractModel(models.Model):
     class Meta:
